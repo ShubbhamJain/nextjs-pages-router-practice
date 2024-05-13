@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 
+import SignUp from "@/components/SignUp";
+
 import ChevronRight from "@/assets/chevronright.svg";
 import ChevronUpDown from "@/assets/chevronupdown.svg";
 
@@ -15,6 +17,8 @@ export function Header() {
       </Link>
 
       <div className="flex gap-3">
+        <SignUp />
+
         <Link href={"/about"} as={"about"}>
           <button className="flex items-center gap-3 bg-blue-500 text-white rounded-lg p-2 hover:scale-[105%] transition-all">
             About
