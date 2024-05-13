@@ -18,6 +18,8 @@ export default function CommentInput() {
     try {
       e.preventDefault();
 
+      if (!inputRef.current?.value) return;
+
       setIsLoading(true);
 
       const data = JSON.stringify({ newContent: inputRef.current?.value });
@@ -42,6 +44,7 @@ export default function CommentInput() {
       });
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
 
@@ -53,10 +56,11 @@ export default function CommentInput() {
 
       <form className="contents" onSubmit={(e) => handleSubmit(e)}>
         <input
+          required
           ref={inputRef}
           disabled={isLoading || isPending}
-          className="border-2 border-[#ECF2F7] px-3 w-[60%] sm:w-[30%] text-xl py-1.5 outline-none rounded-xl sm:rounded-none"
           placeholder="I Wanna be an Engineer!"
+          className="border-2 border-[#ECF2F7] px-3 w-[60%] sm:w-[30%] text-xl py-1.5 outline-none rounded-xl sm:rounded-none"
         />
 
         <button
