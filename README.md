@@ -1,4 +1,4 @@
-This is a simple practice project intended to practice nextjs pages router. The main aim is to make a simple application with the target to ake use of as many concepts of the pages router as much as possible.
+This is a simple practice project intended to practice nextjs pages router. The main aim is to make a simple application with the target to make use of as many concepts of the pages router as much as possible.
 
 - TODO:
   - [x] Design header
