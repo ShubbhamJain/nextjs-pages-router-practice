@@ -38,3 +38,4 @@ next-env.d.ts
 .env
 
 /src/db/migrations/*
+/src/db/migrations/meta/*
