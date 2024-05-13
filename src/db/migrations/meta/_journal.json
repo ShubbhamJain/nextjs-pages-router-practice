@@ -1,0 +1,20 @@
+{
+  "version": "6",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1715526057210,
+      "tag": "0000_upVoteDBMigrations",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1715526121293,
+      "tag": "0001_upVoteDBMigrations",
+      "breakpoints": true
+    }
+  ]
+}
