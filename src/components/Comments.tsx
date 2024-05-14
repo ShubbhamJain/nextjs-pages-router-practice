@@ -7,9 +7,11 @@ import ProfilePic from "@/components/ProfilePic";
 import LikeButton from "@/assets/likebutton.svg";
 import { useRouter } from "next/router";
 import { useState, useTransition } from "react";
+import { useAuthContext } from "@/context/auth";
 
 export default function CommentsList({ comments }: { comments: Comments[] }) {
   const router = useRouter();
+  const { auth } = useAuthContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -57,12 +59,14 @@ export default function CommentsList({ comments }: { comments: Comments[] }) {
 
             <div className="flex items-center gap-5">
               <p>{comment.likes ?? 0}</p>
-              <button
-                disabled={isLoading || isPending}
-                onClick={() => upVoteComment(comment.id, comment.likes ?? 0)}
-              >
-                <Image height={20} src={LikeButton} alt="like-button" />
-              </button>
+              {auth.isLoggedIn && (
+                <button
+                  disabled={isLoading || isPending}
+                  onClick={() => upVoteComment(comment.id, comment.likes ?? 0)}
+                >
+                  <Image height={20} src={LikeButton} alt="like-button" />
+                </button>
+              )}
             </div>
           </div>
           <hr />

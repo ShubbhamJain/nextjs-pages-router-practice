@@ -23,11 +23,9 @@ async function handler(
       .status(200)
       .json(prepareResponse(false, "New Comment added successfully!", null));
   } catch (error) {
-    res.status(500).json({
-      error: true,
-      message: "Error in adding new comment!",
-      data: null,
-    });
+    res
+      .status(500)
+      .json(prepareResponse(true, "Error in adding new comment!", null));
   }
 }
 

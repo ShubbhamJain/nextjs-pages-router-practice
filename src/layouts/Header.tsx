@@ -5,8 +5,10 @@ import SignUp from "@/components/SignUp";
 
 import ChevronRight from "@/assets/chevronright.svg";
 import ChevronUpDown from "@/assets/chevronupdown.svg";
+import { useAuthContext } from "@/context/auth";
 
 export function Header() {
+  const { auth, logout } = useAuthContext();
   return (
     <div className="flex flex-col sm:flex-row justify-between items-center py-4 px-6">
       <Link href={"/"}>
@@ -17,7 +19,8 @@ export function Header() {
       </Link>
 
       <div className="flex gap-3">
-        <SignUp />
+        {!auth.isLoggedIn && <SignUp />}
+        {auth.isLoggedIn && <button onClick={logout}>logout</button>}
 
         <Link href={"/about"} as={"about"}>
           <button className="flex items-center gap-3 bg-blue-500 text-white rounded-lg p-2 hover:scale-[105%] transition-all">

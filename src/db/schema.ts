@@ -8,10 +8,10 @@ import {
 
 export const users = mysqlTable("users", {
   id: int("id").primaryKey().autoincrement(),
-  userName: varchar("userName", { length: 256 }).notNull(),
+  userName: varchar("userName", { length: 256 }).notNull().unique(),
   email: varchar("email", { length: 256 }).notNull().unique(),
   password: varchar("password", { length: 256 }).notNull(),
-  loggedIn: boolean("loggedIn").default(false),
+  loggedIn: boolean("loggedIn").default(true).notNull(),
 });
 
 export const comments = mysqlTable("userComments", {

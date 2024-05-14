@@ -1,14 +1,25 @@
+import z from "zod";
 import Image from "next/image";
 import { FormEvent, useRef, useState } from "react";
 
+import { APIResponseType, User } from "@/utils/types";
+import { signInSchema, signUpSchema } from "@/utils/zodSchemas";
+
+import Loader from "./Loader";
+
 import Close from "@/assets/close.svg";
+import { useAuthContext } from "@/context/auth";
 
 export default function SignUp() {
+  const formRef = useRef<HTMLFormElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const userNameRef = useRef<HTMLInputElement>(null);
 
+  const { setAuth } = useAuthContext();
+
+  const [isLoading, setIsLoading] = useState(false);
   const [userHasAccount, setUserHasAccount] = useState(false);
 
   const handleDialogOpen = () => {
@@ -20,15 +31,78 @@ export default function SignUp() {
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
 
-    if (userHasAccount) {
-      console.log(emailRef.current?.value);
-      console.log(passwordRef.current?.value);
-    } else {
-      console.log(userNameRef.current?.value);
-      console.log(emailRef.current?.value);
-      console.log(passwordRef.current?.value);
+      setIsLoading(true);
+
+      if (userHasAccount) {
+        const data = {
+          email: emailRef.current?.value,
+          password: passwordRef.current?.value,
+        };
+
+        signInSchema.parse({ body: data });
+
+        const signinData = JSON.stringify(data);
+
+        const url = `/api/auth/signin`;
+
+        const res: APIResponseType<User | null> = await fetch(url, {
+          method: "POST",
+          body: signinData,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((res) => res.json());
+
+        if (res.error) throw new Error(res.message);
+
+        setAuth({
+          isLoggedIn: res.data?.loggedIn ?? true,
+          user: res.data,
+        });
+      } else {
+        const data = {
+          userName: userNameRef.current?.value,
+          email: emailRef.current?.value,
+          password: passwordRef.current?.value,
+        };
+
+        signUpSchema.parse({ body: data });
+
+        const signupData = JSON.stringify(data);
+
+        const url = `/api/auth/signup`;
+
+        const res: APIResponseType<User | null> = await fetch(url, {
+          method: "POST",
+          body: signupData,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((res) => res.json());
+
+        if (res.error) throw new Error(res.message);
+
+        setAuth({
+          isLoggedIn: res.data?.loggedIn ?? true,
+          user: res.data,
+        });
+      }
+      setIsLoading(false);
+
+      formRef.current?.reset();
+
+      dialogRef.current?.close();
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const msg = error.issues?.map((issue) => issue.message).join(" ");
+        console.error(`Validation Error: ${msg}`);
+      } else {
+        console.error(error);
+      }
+      setIsLoading(false);
     }
   };
 
@@ -56,7 +130,11 @@ export default function SignUp() {
         </button>
 
         <div className="mt-8">
-          <form className="contents" onSubmit={(e) => handleSubmit(e)}>
+          <form
+            className="contents"
+            onSubmit={(e) => handleSubmit(e)}
+            ref={formRef}
+          >
             <div className="px-12 flex flex-col gap-6">
               {!userHasAccount && (
                 <input
@@ -84,21 +162,25 @@ export default function SignUp() {
             </div>
 
             <div className="flex justify-center mt-8">
-              {userHasAccount ? (
-                <button
-                  type="submit"
-                  className="bg-[#2a2a2a] text-white w-[50%] p-2 rounded-lg font-bold text-lg hover:scale-[102%] transition-all"
-                >
-                  Log in
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  className="bg-[#2a2a2a] text-white w-[50%] p-2 rounded-lg font-bold text-lg hover:scale-[102%] transition-all"
-                >
-                  Create Account
-                </button>
-              )}
+              {isLoading && <Loader />}
+              {!isLoading &&
+                (userHasAccount ? (
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="bg-[#2a2a2a] text-white w-[50%] p-2 rounded-lg font-bold text-lg hover:scale-[102%] transition-all"
+                  >
+                    Log in
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="bg-[#2a2a2a] disabled:bg-slate-400 text-white w-[50%] p-2 rounded-lg font-bold text-lg hover:scale-[102%] disabled:hover:scale-[100%] transition-all"
+                  >
+                    Create Account
+                  </button>
+                ))}
             </div>
           </form>
 

@@ -25,10 +25,8 @@ export default async function handler(
         )
       );
   } catch (error) {
-    res.status(500).json({
-      error: true,
-      message: "Error in fetching comments!",
-      data: null,
-    });
+    res
+      .status(500)
+      .json(prepareResponse(true, "Error in fetching comments!", null));
   }
 }

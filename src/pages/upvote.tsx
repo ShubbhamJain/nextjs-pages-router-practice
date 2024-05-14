@@ -2,10 +2,13 @@ import Head from "next/head";
 
 import { APIResponseType, Comments } from "@/utils/types";
 
+import { useAuthContext } from "@/context/auth";
 import CommentsList from "@/components/Comments";
 import CommentInput from "@/components/CommentInput";
 
 export default function Upvote({ data }: { data: Comments[] }) {
+  const { auth } = useAuthContext();
+
   return (
     <>
       <Head>
@@ -16,7 +19,7 @@ export default function Upvote({ data }: { data: Comments[] }) {
         Upvote comments or Express yourself!
       </p>
 
-      <CommentInput />
+      {auth.isLoggedIn && <CommentInput />}
 
       <CommentsList comments={data} />
     </>
