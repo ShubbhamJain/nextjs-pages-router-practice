@@ -23,5 +23,5 @@ export type AuthContextType = {
     user: User | null;
   };
   setAuth: (value: { isLoggedIn: boolean; user: User | null }) => void;
-  logout: () => void;
+  logout: (id: number) => void;
 };

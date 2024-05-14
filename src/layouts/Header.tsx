@@ -20,7 +20,9 @@ export function Header() {
 
       <div className="flex gap-3">
         {!auth.isLoggedIn && <SignUp />}
-        {auth.isLoggedIn && <button onClick={logout}>logout</button>}
+        {auth.isLoggedIn && (
+          <button onClick={() => logout(auth.user?.id!)}>logout</button>
+        )}
 
         <Link href={"/about"} as={"about"}>
           <button className="flex items-center gap-3 bg-blue-500 text-white rounded-lg p-2 hover:scale-[105%] transition-all">

@@ -1,14 +1,28 @@
 import cookie from "cookie";
+import { eq } from "drizzle-orm";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+import { db } from "@/db/config";
+import { users } from "@/db/schema";
 import { prepareResponse } from "@/utils";
 import { APIResponseType } from "@/utils/types";
+import { logoutchema } from "@/utils/zodSchemas";
+import { validate } from "@/utils/schemaValidation";
 
-export default async function handler(
+async function handler(
   req: NextApiRequest,
   res: NextApiResponse<APIResponseType<null>>
 ) {
   try {
+    const { userId } = req.body;
+
+    await db
+      .update(users)
+      .set({
+        loggedIn: false,
+      })
+      .where(eq(users.id, userId));
+
     res.setHeader(
       "Set-Cookie",
       cookie.serialize("auth_token", "", {
@@ -35,3 +49,5 @@ export default async function handler(
       );
   }
 }
+
+export default validate(logoutchema)(handler);

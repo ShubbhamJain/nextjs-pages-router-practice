@@ -1,6 +1,9 @@
 import jwt from "jsonwebtoken";
+import { eq } from "drizzle-orm";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+import { db } from "@/db/config";
+import { users } from "@/db/schema";
 import { prepareResponse } from "@/utils";
 import { APIResponseType, User } from "@/utils/types";
 
@@ -21,6 +24,13 @@ export default async function handler(
     ) as jwt.JwtPayload & User;
 
     if (new Date(decoded.exp! * 1000) < new Date()) {
+      await db
+        .update(users)
+        .set({
+          loggedIn: false,
+        })
+        .where(eq(users.id, decoded.id));
+
       throw new Error("Auth token expired");
     }
 

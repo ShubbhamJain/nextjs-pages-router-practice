@@ -19,7 +19,7 @@ const AuthContext = createContext<AuthContextType>({
     },
   },
   setAuth: (value: { isLoggedIn: boolean; user: User | null }) => {},
-  logout: () => {},
+  logout: (id: number) => {},
 });
 
 export const useAuthContext = () => useContext(AuthContext);
@@ -30,10 +30,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     user: null,
   });
 
-  const logout = async () => {
+  const logout = async (id: number) => {
     try {
+      const data = JSON.stringify({ userId: id });
+
       const res: APIResponseType<null> = await fetch("/api/auth/logout", {
         method: "POST",
+        body: data,
+        headers: {
+          "Content-Type": "application/json",
+        },
       }).then((res) => res.json());
 
       if (!res || res.error) {
