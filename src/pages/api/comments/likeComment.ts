@@ -5,8 +5,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { comments } from "@/db/schema";
 import { prepareResponse } from "@/utils";
 import { APIResponseType } from "@/utils/types";
+import { validate } from "@/utils/schemaValidation";
+import { likeCommentSchema } from "@/utils/zodSchemas";
 
-export default async function handler(
+async function handler(
   req: NextApiRequest,
   res: NextApiResponse<APIResponseType<null>>
 ) {
@@ -31,3 +33,5 @@ export default async function handler(
     });
   }
 }
+
+export default validate(likeCommentSchema)(handler);

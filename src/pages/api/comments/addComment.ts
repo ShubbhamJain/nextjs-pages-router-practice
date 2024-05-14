@@ -4,16 +4,19 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { comments } from "@/db/schema";
 import { prepareResponse } from "@/utils";
 import { APIResponseType } from "@/utils/types";
+import { validate } from "@/utils/schemaValidation";
+import { postCommentSchema } from "@/utils/zodSchemas";
 
-export default async function handler(
+async function handler(
   req: NextApiRequest,
   res: NextApiResponse<APIResponseType<null>>
 ) {
   try {
-    const { newContent } = req.body;
+    const { newContent, userId } = req.body;
 
     await db.insert(comments).values({
       content: newContent,
+      userId,
     });
 
     res
@@ -27,3 +30,5 @@ export default async function handler(
     });
   }
 }
+
+export default validate(postCommentSchema)(handler);
