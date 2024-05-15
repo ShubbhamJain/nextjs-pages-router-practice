@@ -1,14 +1,16 @@
 import Link from "next/link";
 import Image from "next/image";
 
+import { useAuthContext } from "@/context/auth";
+
 import SignUp from "@/components/SignUp";
+import UserAvatar from "@/components/Useravatar";
 
 import ChevronRight from "@/assets/chevronright.svg";
 import ChevronUpDown from "@/assets/chevronupdown.svg";
-import { useAuthContext } from "@/context/auth";
 
 export function Header() {
-  const { auth, logout } = useAuthContext();
+  const { auth } = useAuthContext();
   return (
     <div className="flex flex-col sm:flex-row justify-between items-center py-4 px-6">
       <Link href={"/"}>
@@ -18,11 +20,9 @@ export function Header() {
         </span>
       </Link>
 
-      <div className="flex gap-3">
+      <div className="flex gap-3 items-center">
         {!auth.isLoggedIn && <SignUp />}
-        {auth.isLoggedIn && (
-          <button onClick={() => logout(auth.user?.id!)}>logout</button>
-        )}
+        {auth.isLoggedIn && <UserAvatar />}
 
         <Link href={"/about"} as={"about"}>
           <button className="flex items-center gap-3 bg-blue-500 text-white rounded-lg p-2 hover:scale-[105%] transition-all">
