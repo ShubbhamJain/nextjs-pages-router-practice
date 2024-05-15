@@ -2,6 +2,8 @@ export type Comments = {
   id: number;
   content: string;
   likes: number | null;
+  userName: string;
+  userId: number;
 };
 
 export type APIResponseType<T> = {

@@ -1,13 +1,13 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { useState, useTransition } from "react";
 
+import { useAuthContext } from "@/context/auth";
 import { APIResponseType, Comments } from "@/utils/types";
 
 import ProfilePic from "@/components/ProfilePic";
 
 import LikeButton from "@/assets/likebutton.svg";
-import { useRouter } from "next/router";
-import { useState, useTransition } from "react";
-import { useAuthContext } from "@/context/auth";
 
 export default function CommentsList({ comments }: { comments: Comments[] }) {
   const router = useRouter();
@@ -53,7 +53,7 @@ export default function CommentsList({ comments }: { comments: Comments[] }) {
         <div key={key} className="w-full">
           <div className="flex justify-between mb-7 px-5">
             <div className="flex gap-10">
-              <ProfilePic text={"sj"} />
+              <ProfilePic text={comment.userName.charAt(0)} />
               <p className="text-lg">{comment.content}</p>
             </div>
 
