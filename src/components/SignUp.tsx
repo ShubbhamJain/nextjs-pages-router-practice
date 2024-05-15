@@ -119,7 +119,7 @@ export default function SignUp() {
       <dialog
         role="dialog"
         ref={dialogRef}
-        className="border-slate-500 border-[0.75px] w-fit md:w-[60%] lg:w-[40%] h-fit rounded-xl p-3"
+        className="border-slate-500 border-[0.75px] w-fit md:w-[60%] lg:w-[40%] max-w-[600px] h-fit rounded-xl p-3"
       >
         <button
           formMethod="dialog"
