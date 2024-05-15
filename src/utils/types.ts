@@ -2,9 +2,10 @@ export type Comments = {
   id: number;
   content: string;
   likes: number | null;
-  userName: string;
   userId: number;
 };
+
+export type CommentsWithUserName = Comments & { userName: string };
 
 export type APIResponseType<T> = {
   error: boolean;

@@ -1,12 +1,12 @@
 import Head from "next/head";
 
-import { APIResponseType, Comments } from "@/utils/types";
-
 import { useAuthContext } from "@/context/auth";
+import { APIResponseType, CommentsWithUserName } from "@/utils/types";
+
 import CommentsList from "@/components/Comments";
 import CommentInput from "@/components/CommentInput";
 
-export default function Upvote({ data }: { data: Comments[] }) {
+export default function Upvote({ data }: { data: CommentsWithUserName[] }) {
   const { auth } = useAuthContext();
 
   return (
@@ -30,9 +30,9 @@ export async function getServerSideProps() {
   try {
     const url = `${process.env.API_ROUTE}/api/comments`;
 
-    const commentsData: APIResponseType<Comments[]> = await fetch(url).then(
-      (res) => res.json()
-    );
+    const commentsData: APIResponseType<CommentsWithUserName[]> = await fetch(
+      url
+    ).then((res) => res.json());
 
     if (commentsData.error) throw new Error(commentsData.message);
 

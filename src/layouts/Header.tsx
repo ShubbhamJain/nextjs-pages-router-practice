@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useAuthContext } from "@/context/auth";
 
 import SignUp from "@/components/SignUp";
-import UserAvatar from "@/components/Useravatar";
+import UserAvatar from "@/components/UserAvatar";
 
 import ChevronRight from "@/assets/chevronright.svg";
 import ChevronUpDown from "@/assets/chevronupdown.svg";
@@ -24,7 +24,7 @@ export function Header() {
         {!auth.isLoggedIn && <SignUp />}
         {auth.isLoggedIn && <UserAvatar />}
 
-        <Link href={"/about"} as={"about"}>
+        <Link href={"/about"} as={"/about"}>
           <button className="flex items-center gap-3 bg-blue-500 text-white rounded-lg p-2 hover:scale-[105%] transition-all">
             About
             <Image
@@ -35,7 +35,7 @@ export function Header() {
           </button>
         </Link>
 
-        <Link href={"/upvote"} as={"upvote"}>
+        <Link href={"/upvote"} as={"/upvote"}>
           <button className="flex items-center gap-3 bg-green-600 text-white rounded-lg p-2 hover:scale-[105%] transition-all">
             Comment/Upvote
             <Image

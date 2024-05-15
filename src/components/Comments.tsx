@@ -3,13 +3,17 @@ import { useRouter } from "next/router";
 import { useState, useTransition } from "react";
 
 import { useAuthContext } from "@/context/auth";
-import { APIResponseType, Comments } from "@/utils/types";
+import { APIResponseType, CommentsWithUserName } from "@/utils/types";
 
 import ProfilePic from "@/components/ProfilePic";
 
 import LikeButton from "@/assets/likebutton.svg";
 
-export default function CommentsList({ comments }: { comments: Comments[] }) {
+export default function CommentsList({
+  comments,
+}: {
+  comments: CommentsWithUserName[];
+}) {
   const router = useRouter();
   const { auth } = useAuthContext();
 

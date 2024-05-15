@@ -29,6 +29,12 @@ export const likeCommentSchema = z.object({
   }),
 });
 
+export const userSchema = z.object({
+  body: z.object({
+    userId: z.number().nonnegative(),
+  }),
+});
+
 export const logoutchema = z.object({
   body: z.object({
     userId: z.number().nonnegative(),
