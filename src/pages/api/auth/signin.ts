@@ -30,8 +30,15 @@ async function handler(
       throw new Error("Incorect Credentials!");
     });
 
+    await db
+      .update(users)
+      .set({
+        loggedIn: true,
+      })
+      .where(eq(users.email, email));
+
     const token = jwt.sign(
-      { id: user.id, userName: user.userName, email, loggedIn: user.loggedIn },
+      { id: user.id, userName: user.userName, email, loggedIn: true },
       process.env.JWT_SECRET!,
       { expiresIn: "1h" }
     );
@@ -55,7 +62,7 @@ async function handler(
           id: user.id,
           email: user.email,
           userName: user.userName,
-          loggedIn: user.loggedIn,
+          loggedIn: true,
         } ?? null
       )
     );
