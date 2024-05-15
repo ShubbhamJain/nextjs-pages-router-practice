@@ -2,8 +2,13 @@ import { useRouter } from "next/router";
 import { APIResponseType } from "@/utils/types";
 import { FormEvent, useRef, useState, useTransition } from "react";
 
+import { useAuthContext } from "@/context/auth";
+
 export default function CommentInput() {
   const router = useRouter();
+  const {
+    auth: { user },
+  } = useAuthContext();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -22,7 +27,10 @@ export default function CommentInput() {
 
       setIsLoading(true);
 
-      const data = JSON.stringify({ newContent: inputRef.current?.value });
+      const data = JSON.stringify({
+        userId: user?.id,
+        newContent: inputRef.current?.value,
+      });
 
       const url = `/api/comments/addComment`;
 
